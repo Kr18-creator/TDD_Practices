@@ -5,16 +5,33 @@ export class StringCalculator {
             return 0;
         }
 
+        let delimiters = [",", "\n"]; // Default delimiters
+
         // Check if the input contains a custom delimiter
-        let delimiter = ",";
         if (numbers.startsWith("//")) {
-            const delimiterLineEndIndex = numbers.indexOf("\n");
-            delimiter = numbers.substring(2, delimiterLineEndIndex);
-            numbers = numbers.substring(delimiterLineEndIndex + 1);
+            const delimiterEndIndex = numbers.indexOf("\n");
+            const delimiterSection = numbers.substring(2, delimiterEndIndex);
+
+            if (delimiterSection.startsWith("[") && delimiterSection.endsWith("]")) {
+                // Multiple custom delimiters
+                const customDelimiters = delimiterSection.match(/\[.*?\]/g);
+                if (customDelimiters) {
+                    delimiters = customDelimiters.map(d => d.slice(1, -1));
+                }
+            } else {
+                // Single custom delimiter
+                delimiters = [delimiterSection];
+            }
+
+            numbers = numbers.substring(delimiterEndIndex + 1);
         }
 
-        // Split the input string by the custom delimiter and new lines
-        const numberArray = numbers.split(new RegExp(`${delimiter}|\n`));
+        // Escape delimiters for use in regex
+        const escapedDelimiters = delimiters.map(d => d.replace(/[.*+?^${}()|[\]\\]/g, '\\$&'));
+        const delimiterRegex = new RegExp(escapedDelimiters.join("|"));
+
+        // Split the input string by the custom delimiters and new lines
+        const numberArray = numbers.split(delimiterRegex);
         let sum = 0;
         let negatives: number[] = [];
 
@@ -25,7 +42,9 @@ export class StringCalculator {
                 if (parsedNumber < 0) {
                     negatives.push(parsedNumber);
                 }
-                sum += parsedNumber;
+                if (parsedNumber <= 1000) {
+                    sum += parsedNumber;
+                }
             }
         }
 

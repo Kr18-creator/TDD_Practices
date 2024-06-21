@@ -36,4 +36,14 @@ describe('StringCalculator', () => {
         expect(() => calculator.add("-4,5,-6")).toThrow('Negatives not allowed: -4, -6');
     });
 
+    it('should ignore numbers greater than 1000', () => {
+        expect(calculator.add("1001,2")).toBe(2);
+        expect(calculator.add("1000,2000,3000")).toBe(1000);
+    });
+    it('should handle delimiters of any length', () => {
+        expect(calculator.add("//[***]\n1***2***3")).toBe(6);
+    });
+    it('should allow multiple delimiters', () => {
+        expect(calculator.add("//[*][%]\n1*2%3")).toBe(6);
+    });
 });
