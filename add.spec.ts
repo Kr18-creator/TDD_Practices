@@ -27,5 +27,13 @@ describe('StringCalculator', () => {
      it('should handle newlines as delimiters in addition to commas', () => {
         expect(calculator.add("1\n2,3")).toBe(6);
     });
+    it('should handle custom delimiters specified at the beginning of the input', () => {
+        expect(calculator.add("//;\n1;2;3")).toBe(6);
+        expect(calculator.add("//|\n4|5|6")).toBe(15);
+    });
+    it('should throw an error when negative numbers are present in the input', () => {
+        expect(() => calculator.add("1,-2,3")).toThrow('Negatives not allowed: -2');
+        expect(() => calculator.add("-4,5,-6")).toThrow('Negatives not allowed: -4, -6');
+    });
 
 });
