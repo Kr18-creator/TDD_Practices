@@ -14,7 +14,7 @@ export class StringCalculator {
 
             if (delimiterSection.startsWith("[") && delimiterSection.endsWith("]")) {
                 // Multiple custom delimiters
-                const customDelimiters = delimiterSection.match(/\[.*?\]/g);
+                const customDelimiters = delimiterSection.match(/\[(.*?)\]/g);
                 if (customDelimiters) {
                     delimiters = customDelimiters.map(d => d.slice(1, -1));
                 }
