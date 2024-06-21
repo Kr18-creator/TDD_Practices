@@ -12,12 +12,10 @@ export class StringCalculator {
             const delimiterEndIndex = numbers.indexOf("\n");
             const delimiterSection = numbers.substring(2, delimiterEndIndex);
 
-            if (delimiterSection.startsWith("[") && delimiterSection.endsWith("]")) {
-                // Multiple custom delimiters
-                const customDelimiters = delimiterSection.match(/\[(.*?)\]/g);
-                if (customDelimiters) {
-                    delimiters = customDelimiters.map(d => d.slice(1, -1));
-                }
+            // Multiple custom delimiters enclosed in square brackets
+            const customDelimiters = delimiterSection.match(/\[(.*?)\]/g);
+            if (customDelimiters) {
+                delimiters = customDelimiters.map(d => d.slice(1, -1));
             } else {
                 // Single custom delimiter
                 delimiters = [delimiterSection];
