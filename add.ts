@@ -1,4 +1,4 @@
-class StringCalculator {
+export class StringCalculator {
     add(numbers: string): number {
         // If the input is an empty string, return 0
         if (numbers === "") {
